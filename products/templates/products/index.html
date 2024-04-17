@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+<div class="d-flex">
+    <img style="width: 120px;" src="{% static "products/logo-active.png" %}">
     <h1>초기페이지</h1>
-    <img src="{% static "products/logo-active.png" %}">
+</div>
+<a href="{% url "products:products" %}">게시글로 가기</a>
 {% endblock content %}
