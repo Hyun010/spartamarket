@@ -1,9 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .forms import CustomUserCreationForm
 from django.views.decorators.http import require_POST,require_http_methods
 from django.contrib.auth.forms import (AuthenticationForm,)
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import get_user_model
 
 @require_http_methods(['GET','POST'])
 def signup(request):
@@ -35,3 +36,19 @@ def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
     return redirect('index')
+
+def profile(request,username):
+    member=get_object_or_404(get_user_model(),username=username)
+    context={"member":member}
+    return render(request, 'accounts/profile.html',context)
+
+def follow(request, user_id):
+    if request.user.is_authenticated:
+        member=get_object_or_404(get_user_model(),pk=user_id)
+        if request.user != member:
+            if member.followers.filter(pk=request.user.pk).exists():
+                member.followers.remove(request.user)
+            else:
+                member.followers.add(request.user)
+        return redirect("accounts:profile",member.username)
+    return redirect("accounts:login")
