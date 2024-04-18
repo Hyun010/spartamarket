@@ -14,6 +14,18 @@
         <a href="{% url "products:product_detail" p.id %}">
         <p>[{{p.pk}}] {{p.title}} | {{p.author}}</p>
         </a>
+        <form action="{% url "products:jjim" p.pk%}" method="post">
+            {% csrf_token %}
+            {% if request.user in p.jjim_users.all %}
+                <button class="btn btn-link text-danger" type="submit">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
+            {% else %}
+                <button class="btn btn-link text-danger" type="submit">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+            {% endif %}
+        </form>
     </li>
     {%empty%}
     <li>장터가 없습니다.</li>
