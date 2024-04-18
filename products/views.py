@@ -33,23 +33,6 @@ def create(request):
     context={"form": form}
     return render(request,"products/create.html",context)
 
-# @login_required
-# @require_http_methods(["GET", "POST"])
-# def update(request,pk):
-#     product=get_object_or_404(Product,pk=pk)
-#     if product.author != request.user:
-#         if request.method=="POST":
-#             form=ProductForm(request.POST,instance=product)
-#             if form.is_valid():
-#                 product=form.save()
-#                 return redirect("products:product_detail",product.pk)
-#     else:
-#         form=ProductForm(instance=product)
-#     context={
-#         "form": form,
-#         "product":product,
-#     }
-#     return render(request,"products/update.html",context)
 @login_required
 @require_http_methods(["GET", "POST"])
 def update(request, pk):
@@ -66,4 +49,11 @@ def update(request, pk):
         "product": product,
     }
     return render(request, "products/update.html", context)
-    
+
+@require_POST
+def delete(request,pk):
+    products=get_object_or_404(Product,pk=pk)
+    if request.user.is_authenticated:
+        if products.author==request.user:
+            products.delete()
+    return redirect("products:products")
