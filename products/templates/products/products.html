@@ -1,5 +1,22 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
-<h1>여기는 게시글 보이는 곳</h1>
+<h1>장터 목록</h1>
+{% if request.user.is_authenticated %}
+    <a href="{% url 'products:create' %}"><button>새 글 작성</button></a>
+    {% else %}
+    <a href="{% url "accounts:login" %}">로그인 하고 글 작성</a>
+{% endif %}
+<ul>
+    {% for p in products %}
+    <li>
+        <a href="{% url "products:product_detail" p.id %}">
+        <p>[{{p.pk}}] {{p.title}} | {{p.author}}</p>
+        </a>
+    </li>
+    {%empty%}
+    <li>장터가 없습니다.</li>
+    {% endfor %}
+</ul>
 {% endblock content %}

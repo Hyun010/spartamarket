@@ -42,6 +42,7 @@ def profile(request,username):
     context={"member":member}
     return render(request, 'accounts/profile.html',context)
 
+@require_POST
 def follow(request, user_id):
     if request.user.is_authenticated:
         member=get_object_or_404(get_user_model(),pk=user_id)
