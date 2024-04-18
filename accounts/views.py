@@ -5,6 +5,7 @@ from django.contrib.auth.forms import (AuthenticationForm,)
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
+from products.models import Product
 
 @require_http_methods(['GET','POST'])
 def signup(request):
@@ -39,7 +40,13 @@ def logout(request):
 
 def profile(request,username):
     member=get_object_or_404(get_user_model(),username=username)
-    context={"member":member}
+    products=Product.objects.all().filter(author=member.id).order_by('-created_at')
+    pd_jjims=Product.objects.all().filter(jjim_users=member.id).order_by('-created_at')
+    context={
+        "member":member,
+        "products":products,
+        "pd_jjims":pd_jjims,
+    }
     return render(request, 'accounts/profile.html',context)
 
 @require_POST

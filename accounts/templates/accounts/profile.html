@@ -20,6 +20,57 @@
 			</form>
 		</div>
 	{% endif %}
-    <p>Username : {{member.username}}</p>
     <p>가입일 : {{member.date_joined.year}}년 {{member.date_joined.month}}월 {{member.date_joined.day}}일</p>
+    <br>
+    <hr>
+    <h2>내가 등록한 물건</h2>
+    <ul>
+        {% for p in products %}
+        <li>
+            <a href="{% url "products:product_detail" p.id %}">
+            <p>[{{p.pk}}] {{p.title}} | {{p.author}}</p>
+            </a>
+            <form action="{% url "products:jjim" p.pk%}" method="post">
+                {% csrf_token %}
+                {% if request.user in p.jjim_users.all %}
+                    <button class="btn btn-link text-danger" name='pro' type="submit" value='s'>
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                {% else %}
+                    <button class="btn btn-link text-danger" name='pro' type="submit"value='s'>
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                {% endif %}
+            </form>
+        </li>
+        {%empty%}
+            <li>등록 물품이 없습니다.</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <hr>
+    <h2>내가 찜한 물건</h2>
+    <ul>
+        {% for p in pd_jjims %}
+        <li>
+            <a href="{% url "products:product_detail" p.id %}">
+            <p>[{{p.pk}}] {{p.title}} | {{p.author}}</p>
+            </a>
+            <form action="{% url "products:jjim" p.pk%}" method="post">
+                {% csrf_token %}
+                {% if request.user in p.jjim_users.all %}
+                    <button class="btn btn-link text-danger" name="pro" type="submit" value="pf">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                {% else %}
+                    <button class="btn btn-link text-danger" name="pro" type="submit" value="pf">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                {% endif %}
+            </form>
+        </li>
+        {%empty%}
+            <li>찜한 물건이 없습니다.</li>
+        {% endfor %}
+    </ul>
     {% endblock content %}

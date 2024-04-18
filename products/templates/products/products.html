@@ -17,11 +17,11 @@
         <form action="{% url "products:jjim" p.pk%}" method="post">
             {% csrf_token %}
             {% if request.user in p.jjim_users.all %}
-                <button class="btn btn-link text-danger" type="submit">
+                <button class="btn btn-link text-danger" name="pro" type="submit" value="pro">
                     <i class="fa-solid fa-heart"></i>
                 </button>
             {% else %}
-                <button class="btn btn-link text-danger" type="submit">
+                <button class="btn btn-link text-danger" name="pro" type="submit" value="pro">
                     <i class="fa-regular fa-heart"></i>
                 </button>
             {% endif %}
