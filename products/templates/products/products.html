@@ -12,6 +12,8 @@
     <li>
         <p>[{{p.pk}}] {{p.title}} | {{a.author}}</p>
     </li>
+    {%empty%}
+    <li>장터가 없습니다.</li>
     {% endfor %}
 </ul>
 {% endblock content %}
