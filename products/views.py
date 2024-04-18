@@ -57,3 +57,15 @@ def delete(request,pk):
         if products.author==request.user:
             products.delete()
     return redirect("products:products")
+
+@require_POST
+def jjim(request,pk):
+    if request.user.is_authenticated:
+        product=get_object_or_404(Product,pk=pk)
+        if product.jjim_users.filter(pk=request.user.id).exists():
+            product.jjim_users.remove(request.user)
+        else:
+            product.jjim_users.add(request.user)
+    else:
+        return redirect("accounts:login")
+    return redirect("products:products")
