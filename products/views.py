@@ -3,6 +3,8 @@ from .models import Product
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST,require_http_methods
 from .forms import ProductForm
+from django.contrib.auth import get_user_model
+from accounts.models import User
 # Create your views here.
 
 def index(request):
@@ -60,12 +62,25 @@ def delete(request,pk):
 
 @require_POST
 def jjim(request,pk):
-    if request.user.is_authenticated:
-        product=get_object_or_404(Product,pk=pk)
-        if product.jjim_users.filter(pk=request.user.id).exists():
-            product.jjim_users.remove(request.user)
+    p=request.POST.get("pro")
+    username=request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found').split('/')[-2]
+    if p=="pro":
+        if request.user.is_authenticated:
+            product=get_object_or_404(Product,pk=pk)
+            if product.jjim_users.filter(pk=request.user.id).exists():
+                product.jjim_users.remove(request.user)
+            else:
+                product.jjim_users.add(request.user)
         else:
-            product.jjim_users.add(request.user)
-    else:
-        return redirect("accounts:login")
-    return redirect("products:products")
+            return redirect("accounts:login")
+        return redirect("products:products")
+    elif p=='pf' or p=='s':
+        if request.user.is_authenticated:
+            product=get_object_or_404(Product,pk=pk)
+            if product.jjim_users.filter(pk=request.user.id).exists():
+                product.jjim_users.remove(request.user)
+            else:
+                product.jjim_users.add(request.user)
+        else:
+            return redirect("accounts:login")
+        return redirect("accounts:profile",username)
