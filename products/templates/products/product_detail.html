@@ -9,5 +9,15 @@
     <p>내용: {{ product.content }}</p>
     <p>가격: {{ product.price|intcomma }}원</p>
     <p>수정일: {{ product.updated_at }}</p>
-    <a href="{% url 'products:products' %}">목록 보기</a>
+    {% if user == product.author %}
+        {% comment %} <form action="{% url 'products:delete' product.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="삭제">
+        </form> {% endcomment %}
+        <a href="{% url 'products:update' product.pk %}">
+            <button>글수정</button>
+        </a>
+    {% endif %}
+        <br>
+    <a href="{% url 'products:products' %}"><button>목록 보기</button></a>
 {% endblock content %}
