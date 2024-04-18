@@ -15,6 +15,7 @@ def products(request):
     context={"products": products}
     return render(request,"products/products.html",context)
 
+@login_required
 def product_detail(request,pk):
     product=get_object_or_404(Product,pk=pk)
     context={"product": product}
