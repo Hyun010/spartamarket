@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
+{% load humanize %}
+{% comment %} {{ view.count|intcomma }} {% endcomment %}
 
 {% block content %}
     <h2>글 상세 페이지</h2>
-    <p>제목:{{ product.title }}</p>
-    <p>작성자:{{ product.author }}</p>
-    <p>내용:{{ product.content }}</p>
-    <p>가격:{{ product.price }}</p>
-    <p>수정일:{{ product.updated_at }}</p>
+    <p>제목: {{ product.title }}</p>
+    <p>작성자: {{ product.author }}</p>
+    <p>내용: {{ product.content }}</p>
+    <p>가격: {{ product.price|intcomma }}원</p>
+    <p>수정일: {{ product.updated_at }}</p>
     <a href="{% url 'products:products' %}">목록 보기</a>
 {% endblock content %}
