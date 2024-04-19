@@ -7,17 +7,13 @@
     {% else %}
     <a href="{% url "accounts:login" %}">로그인 하고 글 작성</a>
 {% endif %}
-<form action="" method="post">
-    {% csrf_token %}
-    <input name="order" type="submit" value="인기순">
-    <input name="order" type="submit" value="최신순">
-</form>
 <ul>
     {% for p in products %}
     <li>
-        <a href="{% url "products:product_detail" p.id %}">
+        {% comment %} <a href="{% url "products:product_detail" p.id %}"> {% endcomment %}
         <p>[{{p.pk}}] {{p.title}} | {{p.author}}</p>
-        </a>
+        {% comment %} </a> {% endcomment %}
+        {{p.title}}
         <form action="{% url "products:jjim" p.pk%}" method="post">
             {% csrf_token %}
             {% if request.user in p.jjim_users.all %}

@@ -23,6 +23,11 @@
                 <button type="submit">로그아웃</button>
             </form>
             <a href="{% url "index"%}"><button>인덱스</button></a>
+            <form action="{% url "products:search" %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="search" placeholder="검색어를 입력하세요">
+                <button type="submit">검색</button>
+            </form>
         </div>
             {% comment %} <a href="{% url "accounts:update" %}"><button>회원정보수정</button></a> {% endcomment %}
 

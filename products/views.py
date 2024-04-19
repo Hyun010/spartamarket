@@ -96,6 +96,14 @@ def jjim(request,pk):
         else:
             return redirect("accounts:login")
         return redirect("accounts:profile",username)
-    
+
+@require_POST
 def search(request):
-    return render(request, 'products/search.html')
+    word=request.POST.get("search")
+    if word:
+        if request.method=="POST":
+            products=Product.objects.all().filter(title__icontains=word)
+            context={"products": products}
+            return render(request,"products/product_detail.html",context)
+    else:
+        return render(request, 'products/search.html')
