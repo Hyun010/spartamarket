@@ -45,7 +45,6 @@ def profile(request,username):
     pd_jjims=Product.objects.all().filter(jjim_users=member.id).order_by('-created_at')
     
     if request.method=='POST':
-        print(request.POST.get("image-clear"))
         if request.POST.get("image-clear")=='clear':
             imageform=UserImageForm(request.POST,request.FILES,instance=member)
             if imageform.is_valid():
