@@ -2,6 +2,16 @@
 
 {% block content %}
     <h1>{{ member.username }}의 프로필 페이지</h1>
+    <img style="width: 200px; height:auto;" src="{{member.image.url}}">
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% comment %} {{imageform.as_p}} {% endcomment %}
+        <input type="checkbox" name="image-clear" id="image-clear_id" value="clear">
+        <label for="image-clear_id">Clear</label><br>
+        <p>Change:<input type="file" name="image" accept="image/*" id="id_image"></p>
+        <button type="submit">수정</button>
+    </form>
     <div>
         <p>
             팔로워 : {{ member.followers.count }}명
