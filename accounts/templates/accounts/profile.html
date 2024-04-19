@@ -83,10 +83,12 @@
                     <button class="btn btn-link text-danger" name="pro" type="submit" value="pf">
                         <i class="fa-solid fa-heart"></i>
                     </button>
+                    <span>{{p.jjim_users.all|length}}</span>
                 {% else %}
                     <button class="btn btn-link text-danger" name="pro" type="submit" value="pf">
                         <i class="fa-regular fa-heart"></i>
                     </button>
+                    <span>{{p.jjim_users.all|length}}</span>
                 {% endif %}
             </form>
         </li>
