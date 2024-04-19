@@ -6,6 +6,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
 from products.models import Product
+from .forms import UserImageForm
 
 @require_http_methods(['GET','POST'])
 def signup(request):
@@ -42,10 +43,42 @@ def profile(request,username):
     member=get_object_or_404(get_user_model(),username=username)
     products=Product.objects.all().filter(author=member.id).order_by('-created_at')
     pd_jjims=Product.objects.all().filter(jjim_users=member.id).order_by('-created_at')
+    
+    if request.method=='POST':
+        print(request.POST.get("image-clear"))
+        if request.POST.get("image-clear")=='clear':
+            imageform=UserImageForm(request.POST,request.FILES,instance=member)
+            if imageform.is_valid():
+                member=imageform.save(commit=False)
+                member.image="images/user.png"
+                member.save()
+                context={
+                    "member":member,
+                    "products":products,
+                    "pd_jjims":pd_jjims,
+                    "imageform":imageform,
+                }
+                
+                return render(request, 'accounts/profile.html',context)
+        else:
+            imageform=UserImageForm(request.POST,request.FILES,instance=member)
+            if imageform.is_valid():
+                imageform.save()
+                context={
+                    "member":member,
+                    "products":products,
+                    "pd_jjims":pd_jjims,
+                    "imageform":imageform,
+                }
+                
+                return render(request, 'accounts/profile.html',context)
+    else:
+        imageform=UserImageForm(instance=member)
     context={
         "member":member,
         "products":products,
         "pd_jjims":pd_jjims,
+        "imageform":imageform,
     }
     return render(request, 'accounts/profile.html',context)
 
