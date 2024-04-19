@@ -13,7 +13,6 @@ def index(request):
 
 def products(request):
     if request.method=="POST":
-        print(request.POST.get('order'))
         if request.POST.get('order')=="인기순":
             products=Product.objects.all().annotate(jjim_cnt=Count("jjim_users")).order_by("-jjim_cnt",'-created_at')
             context={"products": products}
@@ -97,3 +96,6 @@ def jjim(request,pk):
         else:
             return redirect("accounts:login")
         return redirect("accounts:profile",username)
+    
+def search(request):
+    return render(request, 'products/search.html')
