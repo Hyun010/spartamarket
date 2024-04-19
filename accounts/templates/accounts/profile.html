@@ -3,7 +3,7 @@
 {% block content %}
     <h1>{{ member.username }}의 프로필 페이지</h1>
     <img style="width: 200px; height:auto;" src="{{member.image.url}}">
-    
+    {% if request.user == member %}
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% comment %} {{imageform.as_p}} {% endcomment %}
@@ -12,6 +12,7 @@
         <p>Change:<input type="file" name="image" accept="image/*" id="id_image"></p>
         <button type="submit">수정</button>
     </form>
+    {% endif %}
     <div>
         <p>
             팔로워 : {{ member.followers.count }}명
@@ -33,6 +34,7 @@
     <p>가입일 : {{member.date_joined.year}}년 {{member.date_joined.month}}월 {{member.date_joined.day}}일</p>
     <br>
     <hr>
+    {% if request.user == member %}
     <h2>내가 등록한 물건</h2>
     <ul>
         {% for p in products %}
@@ -57,8 +59,15 @@
             <li>등록 물품이 없습니다.</li>
         {% endfor %}
     </ul>
+    {% else %}
+        <h2>{{ member.username }}가 등록한 물건</h2>
+        <ul>
+            <li>다른 사람은 볼 수 없습니다</li>
+        </ul>
+    {% endif %}
     <br>
     <hr>
+    {% if request.user == member %}
     <h2>내가 찜한 물건</h2>
     <ul>
         {% for p in pd_jjims %}
@@ -83,4 +92,10 @@
             <li>찜한 물건이 없습니다.</li>
         {% endfor %}
     </ul>
+    {% else %}
+    <h2>{{ member.username }}가 찜한 물건</h2>
+    <ul>
+        <li>다른 사람은 볼 수 없습니다</li>
+    </ul>
+    {% endif %}
     {% endblock content %}
