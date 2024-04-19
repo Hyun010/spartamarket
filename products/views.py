@@ -5,15 +5,27 @@ from django.views.decorators.http import require_POST,require_http_methods
 from .forms import ProductForm
 from django.contrib.auth import get_user_model
 from accounts.models import User
+from django.db.models import Count
 # Create your views here.
 
 def index(request):
     return render(request, 'products/index.html')
 
 def products(request):
-    products=Product.objects.all().order_by('-created_at')
-    context={"products": products}
-    return render(request,"products/products.html",context)
+    if request.method=="POST":
+        print(request.POST.get('order'))
+        if request.POST.get('order')=="인기순":
+            products=Product.objects.all().annotate(jjim_cnt=Count("jjim_users")).order_by("-jjim_cnt",'-created_at')
+            context={"products": products}
+            return render(request,"products/products.html",context)
+        else:
+            products=Product.objects.all().order_by('-created_at')
+            context={"products": products}
+            return render(request,"products/products.html",context)
+    else:
+        products=Product.objects.all().order_by('-created_at')
+        context={"products": products}
+        return render(request,"products/products.html",context)
 
 @login_required
 def product_detail(request,pk):
