@@ -29,7 +29,7 @@
             {% comment %} <form action="{% url "accounts:delete" %}" method="POST">
                 {% csrf_token %}
                 <input type="submit" value="회원탈퇴"></input>
-            </form> {% endcomment %}
+            </form> {% endcomment %} 
         {% else %}
         <div>
             <a href="{% url 'accounts:login' %}"><button>로그인</button></a>
