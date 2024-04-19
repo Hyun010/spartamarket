@@ -24,12 +24,6 @@
             </form>
             <a href="{% url "index"%}"><button>인덱스</button></a>
         </div>
-            {% comment %} <a href="{% url "accounts:update" %}"><button>회원정보수정</button></a> {% endcomment %}
-
-            {% comment %} <form action="{% url "accounts:delete" %}" method="POST">
-                {% csrf_token %}
-                <input type="submit" value="회원탈퇴"></input>
-            </form> {% endcomment %}
         {% else %}
         <div>
             <a href="{% url 'accounts:login' %}"><button>로그인</button></a>
